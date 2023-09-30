@@ -1,15 +1,53 @@
 "use strict";
 
-const home = (req, res) => {
-  //기능
-  res.render("home/index");
+const User = require("../../models/User");
+
+const output = {
+  home: (req, res) => {
+    //기능
+    res.render("home/index");
+  },
+
+  login: (req, res) => {
+    res.render("home/login");
+  },
+  register: (req, res) => {
+    res.render("home/register");
+  },
 };
 
-const login = (req, res) => {
-  res.render("home/login");
+const process = {
+  login: (req, res) => {
+    //  console.log(req.body);
+    const user = new User(req.body);
+    const response = user.login();
+    return res.json(response);
+    // const id = req.body.id,
+    // psword = req.body.psword;
+
+    // const users = UserStorage.getUsers("id","psword");
+
+    // const response = {};
+    // if(users.id.includes(id)){
+    //   const idx = users.id.indexOf(id);
+    //   if(users.psword[idx] === psword){
+    //     response.sucess = true;
+    //     return res.json(response)
+    //   }
+    // }
+    // response.sucess = false;
+    // response.msg = "로그인에 실패하셨습니다.";
+    // return res.json(response);
+  },
+
+  register: (req, res) => {
+    const user = new User(req.body);
+    const response = user.register();
+    return res.json(response);
+  },
 };
 
 module.exports = {
-  home,
-  login,
+  output,
+  process,
 };
