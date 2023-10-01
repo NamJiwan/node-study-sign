@@ -7,23 +7,27 @@ class User {
     this.body = body;
   }
 
-  login() {
+  async login() {
     const client = this.body;
-    const { id, psword } = UserStorage.getUserInfo(client.id);
+    const { id, psword } = await UserStorage.getUserInfo(client.id);
 
     if (id) {
       if (id === client.id && psword === client.psword) {
-        return {sucess:true};
+        return { success: true };
       }
-      return {sucess:false,msg:"아이디비밀번화 확인해주세요"}
+      return { success: false, msg: "아이디비밀번화 확인해주세요" };
     }
-    return {sucess:false,msg:"아이디비 번화 확인해주세요"}
+    return { success: false, msg: "아이디비 번화 확인해주세요" };
   }
 
-  register(){
+  async register() {
     const client = this.body;
-     UserStorage.save(client);
-    // return response;
+    try {
+      const response = await UserStorage.save(client);
+      return response;
+    } catch (err) {
+      return { success: false, msg: err };
+    }
   }
 }
 
